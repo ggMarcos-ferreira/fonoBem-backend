@@ -3,6 +3,7 @@ from flask_restful import Api
 from helpers.database import db  
 from resource.fonoaudiologo import Fonoaudiologo  # Importa o recurso Fonoaudiologo
 from resource.administrador import Administrador  # Importa o recurso Administrador
+from resource.paciente import Paciente  # Importa o recurso Paciente
 from helpers.cors import cors
 
 # Inicializando a aplicação Flask
@@ -27,6 +28,7 @@ with app.app_context():
 # Definindo as rotas da API
 api.add_resource(Fonoaudiologo, '/fonoaudiologos', '/fonoaudiologos/<int:fonoaudiologo_id>')  
 api.add_resource(Administrador, '/administradores', '/administradores/<int:administrador_id>')
+api.add_resource(Paciente, '/pacientes', '/pacientes/<int:paciente_id>')
 
 if __name__ == '__main__':
     app.run(debug=True)
