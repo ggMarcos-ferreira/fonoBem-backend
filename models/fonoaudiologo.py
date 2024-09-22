@@ -1,7 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-
-# Inicializando o SQLAlchemy 
-db = SQLAlchemy()
+from helpers.database import db # Importa a instância db
 
 # Modelo do Fonoaudiólogo
 class FonoaudiologoModel(db.Model):
