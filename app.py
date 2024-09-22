@@ -1,13 +1,13 @@
-from flask import Flask, request
+from flask import Flask
 from flask_restful import Api
 from helpers.database import db  
-from resource.fonoaudiologo import Fonoaudiologo  # Importa o recurso Fonoaudiologo
-from resource.administrador import Administrador  # Importa o recurso Administrador
-from resource.paciente import Paciente  # Importa o recurso Paciente
+from helpers.api import api, blueprint
 from helpers.cors import cors
 
 # Inicializando a aplicação Flask
 app = Flask(__name__)
+
+# Configurando a API
 api = Api(app)
 
 # Configurando o banco de dados PostgreSQL
@@ -17,18 +17,19 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Inicializando o SQLAlchemy com o app
 db.init_app(app)
 
+# Inicializando a API
+api.init_app(app)
+
 # Inicializando o CORS com o app
 cors.init_app(app)
 
-# Criando as tabelas
+# Registrando o blueprint
+app.register_blueprint(blueprint)
+
+# Criando as tabelas 
 with app.app_context():
-    db.drop_all()  # Remover todas as tabelas 
+    db.drop_all()  # Remover todas as tabelas
     db.create_all()  # Criar as tabelas
 
-# Definindo as rotas da API
-api.add_resource(Fonoaudiologo, '/fonoaudiologos', '/fonoaudiologos/<int:fonoaudiologo_id>')  
-api.add_resource(Administrador, '/administradores', '/administradores/<int:administrador_id>')
-api.add_resource(Paciente, '/pacientes', '/pacientes/<int:paciente_id>')
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True) 
