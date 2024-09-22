@@ -3,6 +3,7 @@ from flask_restful import Api
 from helpers.database import db  
 from resource.fonoaudiologo import Fonoaudiologo  # Importa o recurso Fonoaudiologo
 from resource.administrador import Administrador  # Importa o recurso Administrador
+from helpers.cors import cors
 
 # Inicializando a aplicação Flask
 app = Flask(__name__)
@@ -14,6 +15,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Inicializando o SQLAlchemy com o app
 db.init_app(app)
+
+# Inicializando o CORS com o app
+cors.init_app(app)
 
 # Criando as tabelas
 with app.app_context():
