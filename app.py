@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restful import Api
-from helpers.database import db  
+from helpers.database import db, migrate
 from helpers.api import api, blueprint
 from helpers.cors import cors
 
@@ -16,6 +16,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Inicializando o SQLAlchemy com o app
 db.init_app(app)
+
+# Inicializando a migração com a aplicação e o banco de dados
+migrate.init_app(app, db)
 
 # Inicializando a API
 api.init_app(app)
