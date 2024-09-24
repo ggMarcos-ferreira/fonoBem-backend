@@ -1,5 +1,14 @@
+from flask_restful import fields
 from helpers.database import db # Importa a instância db
 
+# Definindo o esquema de saída para o fonoaudiólogo
+fonoaudiologo_fields = {
+    'id': fields.Integer,
+    'nome': fields.String,
+    'email': fields.String,
+    'telefone': fields.String,
+    'numero_instituicao': fields.String
+}
 # Modelo do Fonoaudiólogo
 class FonoaudiologoModel(db.Model):
     """

@@ -1,4 +1,15 @@
-from helpers.database import db  # Importa a instância db
+from flask_restful import fields
+from helpers.database import db # Importa a instância db
+
+# Definindo o esquema de saída para o paciente
+paciente_fields = {
+    'id': fields.Integer,
+    'nome': fields.String,
+    'email': fields.String,
+    'telefone': fields.String,
+    'data_nascimento': fields.String,  # Data convertida para string
+    'observacoes': fields.String,  
+}
 
 # Modelo do Paciente
 class PacienteModel(db.Model):

@@ -1,6 +1,6 @@
 from flask import request
-from flask_restful import Resource
-from models.fonoaudiologo import FonoaudiologoModel, db  # Importa o modelo
+from flask_restful import Resource, marshal_with
+from models.fonoaudiologo import FonoaudiologoModel, db, fonoaudiologo_fields  # Importa o modelo e os fields
 from helpers.logging import logger
 
 class Fonoaudiologo(Resource):
@@ -8,20 +8,22 @@ class Fonoaudiologo(Resource):
     Recurso para gerenciar os fonoaudiólogos.
     Implementa os métodos GET, POST, PUT e DELETE.
     """
-    
+
+    @marshal_with(fonoaudiologo_fields)
     def get(self, fonoaudiologo_id=None):
         if fonoaudiologo_id:
             fonoaudiologo = FonoaudiologoModel.query.filter_by(id=fonoaudiologo_id).first()
             if fonoaudiologo:
                 logger.info(f"Fonoaudiólogo encontrado: {fonoaudiologo.json()}")
-                return fonoaudiologo.json(), 200
+                return fonoaudiologo, 200
             logger.warning(f"Fonoaudiólogo não encontrado: ID {fonoaudiologo_id}")
             return {'message': 'Fonoaudiólogo não encontrado'}, 404
         else:
             fonoaudiologos = FonoaudiologoModel.query.all()
             logger.info("Retornando todos os fonoaudiólogos.")
-            return [fonoaudiologo.json() for fonoaudiologo in fonoaudiologos], 200
+            return fonoaudiologos, 200
 
+    @marshal_with(fonoaudiologo_fields)
     def post(self):
         dados = request.get_json()
         if not (dados.get('nome') and dados.get('email') and 
@@ -43,8 +45,9 @@ class Fonoaudiologo(Resource):
         db.session.add(novo_fonoaudiologo)
         db.session.commit()
         logger.info(f"Novo fonoaudiólogo adicionado: {novo_fonoaudiologo.json()}")
-        return novo_fonoaudiologo.json(), 201
+        return novo_fonoaudiologo, 201
 
+    @marshal_with(fonoaudiologo_fields)
     def put(self, fonoaudiologo_id):
         fonoaudiologo = FonoaudiologoModel.query.filter_by(id=fonoaudiologo_id).first()
         if not fonoaudiologo:
@@ -60,7 +63,7 @@ class Fonoaudiologo(Resource):
 
         db.session.commit()
         logger.info(f"Fonoaudiólogo atualizado: {fonoaudiologo.json()}")
-        return fonoaudiologo.json(), 200
+        return fonoaudiologo, 200
 
     def delete(self, fonoaudiologo_id):
         fonoaudiologo = FonoaudiologoModel.query.filter_by(id=fonoaudiologo_id).first()

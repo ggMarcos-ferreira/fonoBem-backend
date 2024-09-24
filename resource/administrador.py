@@ -1,6 +1,6 @@
 from flask import request
-from flask_restful import Resource
-from models.administrador import AdministradorModel, db  # Importa o modelo
+from flask_restful import Resource, marshal_with
+from models.administrador import AdministradorModel, db, administrador_fields  # Importa o modelo e os fields
 from helpers.logging import logger
 
 class Administrador(Resource):
@@ -9,19 +9,21 @@ class Administrador(Resource):
     Implementa os métodos GET, POST, PUT e DELETE.
     """
     
+    @marshal_with(administrador_fields)
     def get(self, administrador_id=None):
         if administrador_id:
             administrador = AdministradorModel.query.filter_by(id=administrador_id).first()
             if administrador:
                 logger.info(f"Administrador encontrado: {administrador.json()}")
-                return administrador.json(), 200
+                return administrador, 200
             logger.warning(f"Administrador não encontrado: ID {administrador_id}")
             return {'message': 'Administrador não encontrado'}, 404
         else:
             administradores = AdministradorModel.query.all()
             logger.info("Retornando todos os administradores.")
-            return [administrador.json() for administrador in administradores], 200
+            return administradores, 200
 
+    @marshal_with(administrador_fields)
     def post(self):
         dados = request.get_json()
         if not (dados.get('nome') and dados.get('email') and 
@@ -42,8 +44,9 @@ class Administrador(Resource):
         db.session.add(novo_administrador)
         db.session.commit()
         logger.info(f"Novo administrador adicionado: {novo_administrador.json()}")
-        return novo_administrador.json(), 201
+        return novo_administrador, 201
 
+    @marshal_with(administrador_fields) 
     def put(self, administrador_id):
         administrador = AdministradorModel.query.filter_by(id=administrador_id).first()
         if not administrador:
@@ -58,7 +61,7 @@ class Administrador(Resource):
 
         db.session.commit()
         logger.info(f"Administrador atualizado: {administrador.json()}")
-        return administrador.json(), 200
+        return administrador, 200 
 
     def delete(self, administrador_id):
         administrador = AdministradorModel.query.filter_by(id=administrador_id).first()

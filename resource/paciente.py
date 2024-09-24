@@ -1,6 +1,6 @@
 from flask import request
-from flask_restful import Resource
-from models.paciente import PacienteModel, db  # Importa o modelo
+from flask_restful import Resource, marshal_with
+from models.paciente import PacienteModel, db, paciente_fields  # Importa o modelo e os fields
 from helpers.logging import logger
 
 class Paciente(Resource):
@@ -9,19 +9,21 @@ class Paciente(Resource):
     Implementa os métodos GET, POST, PUT e DELETE.
     """
 
+    @marshal_with(paciente_fields)
     def get(self, paciente_id=None):
         if paciente_id:
             paciente = PacienteModel.query.filter_by(id=paciente_id).first()
             if paciente:
                 logger.info(f"Paciente encontrado: {paciente.json()}")
-                return paciente.json(), 200
+                return paciente, 200
             logger.warning(f"Paciente não encontrado: ID {paciente_id}")
             return {'message': 'Paciente não encontrado'}, 404
         else:
             pacientes = PacienteModel.query.all()
             logger.info("Retornando todos os pacientes.")
-            return [paciente.json() for paciente in pacientes], 200
+            return pacientes, 200
 
+    @marshal_with(paciente_fields)
     def post(self):
         dados = request.get_json()
         # Verifica se os campos obrigatórios estão presentes
@@ -45,8 +47,9 @@ class Paciente(Resource):
         db.session.add(novo_paciente)
         db.session.commit()
         logger.info(f"Novo paciente adicionado: {novo_paciente.json()}")
-        return novo_paciente.json(), 201
+        return novo_paciente, 201
 
+    @marshal_with(paciente_fields)
     def put(self, paciente_id):
         paciente = PacienteModel.query.filter_by(id=paciente_id).first()
         if not paciente:
@@ -63,7 +66,7 @@ class Paciente(Resource):
 
         db.session.commit()
         logger.info(f"Paciente atualizado: {paciente.json()}")
-        return paciente.json(), 200
+        return paciente, 200
 
     def delete(self, paciente_id):
         paciente = PacienteModel.query.filter_by(id=paciente_id).first()
