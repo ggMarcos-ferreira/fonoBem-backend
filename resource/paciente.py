@@ -8,7 +8,7 @@ class Paciente(Resource):
     Recurso para gerenciar os pacientes.
     Implementa os métodos GET, POST, PUT e DELETE.
     """
-
+    
     @marshal_with(paciente_fields)
     def get(self, paciente_id=None):
         if paciente_id:
@@ -27,7 +27,7 @@ class Paciente(Resource):
     def post(self):
         dados = request.get_json()
         # Verifica se os campos obrigatórios estão presentes
-        if not all(dados.get(field) for field in ['nome', 'email', 'telefone', 'data_nascimento', 'senha']):
+        if not all(dados.get(field) for field in ['nome', 'email', 'telefone', 'senha']):
             logger.error("Dados obrigatórios não fornecidos.")
             return {'message': 'Nome, email, telefone, data de nascimento e senha são obrigatórios'}, 400
 
@@ -40,8 +40,6 @@ class Paciente(Resource):
             nome=dados['nome'],
             email=dados['email'],
             telefone=dados['telefone'],
-            data_nascimento=dados['data_nascimento'],
-            observacoes=dados.get('observacoes'),  # Campo opcional
             senha=dados['senha'] 
         )
         db.session.add(novo_paciente)
@@ -61,7 +59,6 @@ class Paciente(Resource):
         paciente.email = dados.get('email', paciente.email)
         paciente.telefone = dados.get('telefone', paciente.telefone)
         paciente.data_nascimento = dados.get('data_nascimento', paciente.data_nascimento)
-        paciente.observacoes = dados.get('observacoes', paciente.observacoes)
         paciente.senha = dados.get('senha', paciente.senha)
 
         db.session.commit()
