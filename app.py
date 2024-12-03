@@ -3,7 +3,7 @@ from flask import Flask
 from helpers.database import db, migrate
 from helpers.api import api, blueprint
 from helpers.cors import cors
-from resource.paciente import AudioUpload  # Recurso de upload
+from resource.audio import AudioUpload  # Recurso de upload
 
 # Inicializando a aplicação Flask
 app = Flask(__name__)
