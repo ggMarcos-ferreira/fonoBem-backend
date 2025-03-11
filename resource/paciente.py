@@ -1,6 +1,6 @@
 from flask import request
 from flask_restful import Resource, marshal_with
-from models.paciente import PacienteModel, db, paciente_fields  # Importa o modelo e os fields
+from models.paciente import PacienteModel, db, paciente_fields  
 from helpers.logging import logger
 
 class Paciente(Resource):
@@ -8,7 +8,6 @@ class Paciente(Resource):
     Recurso para gerenciar os pacientes.
     Implementa os métodos GET, POST, PUT e DELETE.
     """
-    
     @marshal_with(paciente_fields)
     def get(self, paciente_id=None):
         if paciente_id:

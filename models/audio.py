@@ -1,6 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from helpers.database import db
 
 class AudioModel(db.Model):
     __tablename__ = 'audios'

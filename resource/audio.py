@@ -1,9 +1,7 @@
 from flask_restful import Resource
 from models.audio import AudioModel, db
-from audio.audios import AudioUpload
+from helpers.audio.upload import upload_file
 import os
-
-audio_helper = AudioUpload()
 
 class Audio(Resource):
     def get(self, audio_id=None):
@@ -18,9 +16,9 @@ class Audio(Resource):
 
     def post(self):
         # Realiza o upload do arquivo e salva localmente
-        response = audio_helper.upload_file()
+        response = upload_file()
         if response[1] == 201:
-            data = response[0].json
+            data = response[0] #.json
             # Armazena informações do arquivo no banco de dados
             new_audio = AudioModel(filename=data['filename'], filepath=data['filepath'])
             db.session.add(new_audio)
