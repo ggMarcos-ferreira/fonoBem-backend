@@ -1,40 +1,32 @@
-from flask_restful import fields
-from helpers.database import db # Importa a instância db
+from helpers.database import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
-# Definindo o esquema de saída para o fonoaudiólogo
-fonoaudiologo_fields = {
-    'id': fields.Integer,
-    'nome': fields.String,
-    'email': fields.String,
-    'telefone': fields.String,
-    'numero_instituicao': fields.String
-}
-# Modelo do Fonoaudiólogo
 class FonoaudiologoModel(db.Model):
-    """
-    Modelo para a tabela 'fonoaudiologos' no banco de dados.
-    Contém os atributos: id, nome, email, telefone, numero_instituicao, senha.
-    """
     __tablename__ = 'fonoaudiologos'
 
-    id = db.Column(db.Integer, primary_key=True)  # Chave primária
-    nome = db.Column(db.String(80), nullable=False)  # Nome do fonoaudiólogo
-    email = db.Column(db.String(120), unique=True, nullable=False)  # Email, deve ser único
-    telefone = db.Column(db.String(20), nullable=False)  # Telefone do fonoaudiólogo
-    numero_instituicao = db.Column(db.String(20), nullable=True)  # Número da instituição
-    senha = db.Column(db.String(128), nullable=False)  # Senha do fonoaudiólogo
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    telefone = db.Column(db.String(20), nullable=False)
+    numero_instituicao = db.Column(db.String(20), nullable=True)
+    senha = db.Column(db.String(256), nullable=False)  # Senha será armazenada como hash
 
     def __repr__(self):
-        """Retorna a representação textual do objeto."""
-        return f"Fonoaudiologo(nome={self.nome}, email={self.email}, telefone={self.telefone}, numero_instituicao={self.numero_instituicao}, senha={self.senha})"
+        return f"Fonoaudiologo(nome={self.nome}, email={self.email}, telefone={self.telefone})"
 
     def json(self):
-        """Converte o objeto em um dicionário JSON."""
         return {
             'id': self.id,
             'nome': self.nome,
             'email': self.email,
             'telefone': self.telefone,
             'numero_instituicao': self.numero_instituicao,
-            'senha': self.senha
         }
+
+    def set_senha(self, senha):
+        """Gera o hash da senha e armazena no banco de dados."""
+        self.senha = generate_password_hash(senha)
+
+    def check_senha(self, senha):
+        """Verifica se a senha fornecida corresponde ao hash armazenado."""
+        return check_password_hash(self.senha, senha)
