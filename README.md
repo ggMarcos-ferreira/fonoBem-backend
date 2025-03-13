@@ -29,7 +29,7 @@ Este projeto foi feito com as seguintes tecnologias/bibliotecas:
 
 ## Front-end
 
-Para conferir o front-end do projeto, acesse: https://github.com/AbdeelLucena/Site-Fonoaudiologia-Front-End
+Para conferir o front-end do projeto, acesse: https://github.com/AbdeelLucena/Site-Fonoaudiologia-Front-End-main
 
 ## Aproveite este projeto!
 
