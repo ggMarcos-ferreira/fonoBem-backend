@@ -1,6 +1,6 @@
 ## FonoBem 
 
-Este projeto consiste em uma API desenvolvida com Flask-RESTful e uma interface de usuário em React, voltada para o gerenciamento de pacientes, fonoaudiólogos e administradores em uma clínica de fonoaudiologia. A API permite o cadastro, consulta, atualização e exclusão de informações de pacientes, fonoaudiólogos e administradores, com registro de operações via logger. A interface React oferece uma experiência intuitiva para os usuários interagirem com o sistema, facilitando a gestão dos dados clínicos.
+Este projeto consiste em uma API desenvolvida com Flask-RESTful e uma interface de usuário em React, voltada para o gerenciamento de pacientes, fonoaudiólogos e administradores em uma clínica de fonoaudiologia. A API permite o cadastro, consulta, atualização e exclusão de informações de pacientes e fonoaudiólogos, com registro de operações via logger. A interface React oferece uma experiência intuitiva para os usuários interagirem com o sistema, facilitando a gestão dos dados clínicos.
 
   > ⚠️ Sinta-se à vontade para compartilhar seus **_feedback_** e **_insights_** ou relate um **_bug_**!
 
